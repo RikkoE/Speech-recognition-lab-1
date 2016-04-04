@@ -29,6 +29,8 @@ def preemp(input, p=0.97):
     Note (you can use the function lfilter from scipy.signal)
     """
 
+    
+
 
 def windowing(input):
     """
