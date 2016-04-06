@@ -1,7 +1,8 @@
 # DT2118, Lab 1 Feature Extraction
 # Functions to be implemented ----------------------------------
 
-import scipy.signal
+import scipy.signal as sig
+import numpy as np 
 
 def enframe(samples, winlen, winshift):
     """
@@ -14,6 +15,23 @@ def enframe(samples, winlen, winshift):
         numpy array [N x winlen], where N is the number of windows that fit
         in the input signal
     """
+
+    #FULLÖSNING MEN FUNKAR 
+    windows = samples.size / (winlen*2) - 9
+
+    prev = 0
+    nxt = 400
+
+    step = 200
+
+    result = np.zeros(shape=(80,windows))
+
+    for i in range(0,80):
+        result[i] = samples[prev:nxt]
+        prev = prev + 200
+        nxt = nxt + 200
+
+    return result
 
 def preemp(input, p=0.97):
     """
@@ -29,7 +47,7 @@ def preemp(input, p=0.97):
     Note (you can use the function lfilter from scipy.signal)
     """
 
-    
+    filtered_signal = sig.lfilter(p, 1.0, input)
 
 
 def windowing(input):
