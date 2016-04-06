@@ -32,8 +32,12 @@ expre = example['preemph']
 realframes = pro.enframe(example['samples'], frame_len, frame_shift)
 realpre = pro.preemp(realframes)
 
-print exframes
-print expre
+#----------------------------------
+#	TEST IF FUNCTIONS ARE CORRECT
+#----------------------------------
+
+print "Frames success: ", np.array_equal(realframes,exframes)
+print "Pre-emphesis success: ", np.array_equal(realpre,expre)
 
 #----------------------------------
 #	PLOTTING EXAMPLE ANSWERS
@@ -61,8 +65,6 @@ ax.imshow(realframes.T, interpolation = 'nearest', aspect = 'auto', origin = 'lo
 ax = plt.subplot(3, 2, 6)
 ax.imshow(realpre.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
 
-
-print np.array_equal(realframes,exframes)
 
 #print samples.shape
 
