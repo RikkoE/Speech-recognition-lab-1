@@ -7,6 +7,11 @@ import numpy as np
 example = np.load('example.npz')['example'].item()
 tidigits = np.load('tidigits.npz')['tidigits']
 
+sampling_rate = 20000
+frame_duration = 0.02
+frame_shift = 0.01
+frame_len = sampling_rate * frame_duration
+
 #print "tidigits['filename']: ", tidigits['filename']	#printing a dictionary named 'frames'
 
 samples = example['samples']
@@ -29,10 +34,11 @@ expre = example['preemph']
 ax = plt.subplot(3, 2, 5)
 ax.imshow(expre.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
 
-testing = pro.enframe(example['samples'], 20, 10)
+testing = pro.enframe(example['samples'], frame_len, frame_shift)
 
 ax = plt.subplot(3, 2, 4)
 ax.imshow(testing.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
+
 
 
 print np.array_equal(testing,exframes)
