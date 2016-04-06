@@ -16,20 +16,19 @@ def enframe(samples, winlen, winshift):
         in the input signal
     """
 
-    #FULLÖSNING MEN FUNKAR 
-    windows = samples.size / (winlen*2) - 9
-
     prev = 0
-    nxt = 400
+    nxt = int(winlen)               # 400 samples in one frame (20 ms)
 
-    step = 200
+    step = int(winshift * 20000)    # 200 samples per step (10 ms)
 
-    result = np.zeros(shape=(80,windows))
+    num_frames = int((samples.size // winlen) * 2)  # 80 frames fit in the signal
 
-    for i in range(0,80):
+    result = np.zeros(shape=(num_frames,winlen))
+
+    for i in range(0,num_frames):
         result[i] = samples[prev:nxt]
-        prev = prev + 200
-        nxt = nxt + 200
+        prev += step
+        nxt += step
 
     return result
 
