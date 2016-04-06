@@ -32,7 +32,7 @@ def enframe(samples, winlen, winshift):
 
     return result
 
-def preemp(input, p=0.97):
+def preemp(inp, p=0.97):
     """
     Pre-emphasis filter.
 
@@ -46,7 +46,14 @@ def preemp(input, p=0.97):
     Note (you can use the function lfilter from scipy.signal)
     """
 
-    filtered_signal = sig.lfilter(p, 1.0, input)
+    np.set_printoptions(suppress=True)
+
+    b = np.array([1,-p])
+    a = np.array([1])
+
+    filtered_signal = sig.lfilter(b, a, inp)
+
+    return filtered_signal
 
 
 def windowing(input):
@@ -113,10 +120,3 @@ def dtw(localdist):
     Output:
         globaldist: scalar, global distance computed by Dynamic Time Warping
     """
-
-def test():
-    """ Print Hello world
-
-    """
-
-    print "Hello world!!!"
