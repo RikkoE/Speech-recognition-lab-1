@@ -2,6 +2,8 @@
 # Functions to be implemented ----------------------------------
 
 import scipy.signal as sig
+import scipy.fftpack as ft
+import tools
 import numpy as np 
 
 def enframe(samples, winlen, winshift):
@@ -56,7 +58,7 @@ def preemp(inp, p=0.97):
     return filtered_signal
 
 
-def windowing(input):
+def windowing(inp):
     """
     Applies hamming window to the input frames.
 
@@ -64,12 +66,22 @@ def windowing(input):
         input: array of speech samples [N x M] where N is the number of frames and
                M the samples per frame
     Output:
-        array of windoed speech samples [N x M]
+        array of windowed speech samples [N x M]
     Note (you can use the function hamming from scipy.signal, include the sym=0 option
     if you want to get the same results as in the example)
     """
 
-def powerSpectrum(input, nfft):
+    M = 400
+
+    print inp.size
+
+    winfunc = sig.hamming(M, sym = False)
+
+    win = inp * winfunc
+
+    return win
+
+def powerSpectrum(inp, nfft):
     """
     Calculates the power spectrum of the input signal, that is the square of the modulus of the FFT
 
@@ -82,7 +94,13 @@ def powerSpectrum(input, nfft):
     Note: you can use the function fft from scipy.fftpack
     """
 
-def logMelSpectrum(input, samplingrate):
+    spec = ft.fft(inp, nfft)
+
+    spec = abs(spec)**2
+
+    return spec
+
+def logMelSpectrum(inp, samplingrate):
     """
     Calculates the log output of a Mel filterbank when the input is the power spectrum
 
@@ -96,6 +114,16 @@ def logMelSpectrum(input, samplingrate):
     Note: use the trfbank function provided in tools.py to calculate the filterbank shapes and
           nmelfilters
     """
+
+
+
+    trf = tools.trfbank(samplingrate, 512)
+
+    res = np.dot(inp, trf.T)
+
+    res = np.log10(res)
+
+    return res
 
 def cepstrum(input, nceps):
     """
