@@ -125,7 +125,7 @@ def logMelSpectrum(inp, samplingrate):
 
     return res
 
-def cepstrum(input, nceps):
+def cepstrum(inp, nceps):
     """
     Calulates Cepstral coefficients from mel spectrum applying Discrete Cosine Transform
 
@@ -137,6 +137,14 @@ def cepstrum(input, nceps):
         array of Cepstral coefficients [N x nceps]
     Note: you can use the function dct from scipy.fftpack.realtransforms
     """
+
+    cosine = ft.dct(inp, norm = 'ortho')
+
+    res = cosine[:,0:13]
+
+    res = tools.lifter(res)
+
+    return res
 
 def dtw(localdist):
     """Dynamic Time Warping.

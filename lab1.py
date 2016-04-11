@@ -32,12 +32,15 @@ expre = example['preemph']
 exwindowed = example['windowed']
 exspec = example['spec']
 exmspec = example['mspec']
+exmfcc = example['mfcc']
+exlmfcc = example['lmfcc']
 
 realframes = pro.enframe(example['samples'], frame_len, frame_shift)
 realpre = pro.preemp(realframes)
 realwindowed = pro.windowing(realpre)
 realspec = pro.powerSpectrum(realwindowed, 512)
 realmspec = pro.logMelSpectrum(realspec, sampling_rate)
+realmfcc = pro.cepstrum(realmspec, 13)
 
 #----------------------------------
 #	TEST IF FUNCTIONS ARE CORRECT
@@ -91,13 +94,13 @@ print "Window success: ", np.array_equal(realwindowed,exwindowed)
 #----------------------------------
 
 ax = plt.subplot(graph_rows, 1, 1)
-ax.plot(realmspec - exmspec)
+ax.plot(realmfcc - exlmfcc)
 
 ax = plt.subplot(graph_rows, 1, 2)
-ax.imshow(exmspec.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
+ax.imshow(exlmfcc.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
 
 ax = plt.subplot(graph_rows, 1, 3)
-ax.imshow(realmspec.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
+ax.imshow(realmfcc.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
 
 print exmspec.shape
 
