@@ -56,7 +56,7 @@ def preemp(inp, p=0.97):
     return filtered_signal
 
 
-def windowing(input):
+def windowing(inp):
     """
     Applies hamming window to the input frames.
 
@@ -64,10 +64,18 @@ def windowing(input):
         input: array of speech samples [N x M] where N is the number of frames and
                M the samples per frame
     Output:
-        array of windoed speech samples [N x M]
+        array of windowed speech samples [N x M]
     Note (you can use the function hamming from scipy.signal, include the sym=0 option
     if you want to get the same results as in the example)
     """
+
+    M = 400
+
+    winfunc = sig.hamming(M, sym = False)
+
+    win = inp * winfunc
+
+    return win
 
 def powerSpectrum(input, nfft):
     """
