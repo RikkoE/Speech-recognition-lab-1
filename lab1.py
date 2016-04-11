@@ -16,7 +16,7 @@ frame_duration = 0.02
 frame_shift = 0.01
 frame_len = sampling_rate * frame_duration
 
-graph_rows = 5
+graph_rows = 3
 
 #print "tidigits['filename']: ", tidigits['filename']	#printing a dictionary named 'frames'
 
@@ -31,11 +31,13 @@ exframes = example['frames']
 expre = example['preemph']
 exwindowed = example['windowed']
 exspec = example['spec']
+exmspec = example['mspec']
 
 realframes = pro.enframe(example['samples'], frame_len, frame_shift)
 realpre = pro.preemp(realframes)
 realwindowed = pro.windowing(realpre)
 realspec = pro.powerSpectrum(realwindowed, 512)
+realmspec = pro.logMelSpectrum(realspec, sampling_rate)
 
 #----------------------------------
 #	TEST IF FUNCTIONS ARE CORRECT
@@ -49,40 +51,54 @@ print "Window success: ", np.array_equal(realwindowed,exwindowed)
 #	PLOTTING EXAMPLE ANSWERS
 #----------------------------------
 
-ax = plt.subplot(graph_rows, 2, 1)
-ax.plot(realspec - exspec)
+#ax = plt.subplot(graph_rows, 2, 1)
+#ax.plot(realspec - exspec)
 
-ax = plt.subplot(graph_rows, 2, 3)
-ax.imshow(exframes.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
+#ax = plt.subplot(graph_rows, 2, 3)
+#ax.imshow(exframes.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
 
-ax = plt.subplot(graph_rows, 2, 5)
-ax.imshow(expre.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
+#ax = plt.subplot(graph_rows, 2, 5)
+#ax.imshow(expre.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
 
-ax = plt.subplot(graph_rows, 2, 7)
-ax.imshow(exwindowed.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
+#ax = plt.subplot(graph_rows, 2, 7)
+#ax.imshow(exwindowed.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
 
-ax = plt.subplot(graph_rows, 2, 9)
-ax.imshow(exspec.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
+#ax = plt.subplot(graph_rows, 2, 9)
+#ax.imshow(exspec.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
 
 #----------------------------------
 #	PLOTTING REAL ANSWERS
 #----------------------------------
 
-ax = plt.subplot(graph_rows, 2, 2)
-ax.plot(d['samples'])
+#ax = plt.subplot(graph_rows, 2, 2)
+#ax.plot(d['samples'])
 
-ax = plt.subplot(graph_rows, 2, 4)
-ax.imshow(realframes.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
+#ax = plt.subplot(graph_rows, 2, 4)
+#ax.imshow(realframes.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
 
-ax = plt.subplot(graph_rows, 2, 6)
-ax.imshow(realpre.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
+#ax = plt.subplot(graph_rows, 2, 6)
+#ax.imshow(realpre.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
 
-ax = plt.subplot(graph_rows, 2, 8)
-ax.imshow(realwindowed.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
+#ax = plt.subplot(graph_rows, 2, 8)
+#ax.imshow(realwindowed.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
 
-ax = plt.subplot(graph_rows, 2, 10)
-ax.imshow(realspec.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
+#ax = plt.subplot(graph_rows, 2, 10)
+#ax.imshow(realspec.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
 
-print realspec
+
+#----------------------------------
+#	PLOTTING ANSWERS
+#----------------------------------
+
+ax = plt.subplot(graph_rows, 1, 1)
+ax.plot(realmspec - exmspec)
+
+ax = plt.subplot(graph_rows, 1, 2)
+ax.imshow(exmspec.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
+
+ax = plt.subplot(graph_rows, 1, 3)
+ax.imshow(realmspec.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
+
+print exmspec.shape
 
 plt.show()

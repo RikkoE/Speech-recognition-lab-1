@@ -3,6 +3,7 @@
 
 import scipy.signal as sig
 import scipy.fftpack as ft
+import tools
 import numpy as np 
 
 def enframe(samples, winlen, winshift):
@@ -99,7 +100,7 @@ def powerSpectrum(inp, nfft):
 
     return spec
 
-def logMelSpectrum(input, samplingrate):
+def logMelSpectrum(inp, samplingrate):
     """
     Calculates the log output of a Mel filterbank when the input is the power spectrum
 
@@ -113,6 +114,16 @@ def logMelSpectrum(input, samplingrate):
     Note: use the trfbank function provided in tools.py to calculate the filterbank shapes and
           nmelfilters
     """
+
+
+
+    trf = tools.trfbank(samplingrate, 512)
+
+    res = np.dot(inp, trf.T)
+
+    res = np.log10(res)
+
+    return res
 
 def cepstrum(input, nceps):
     """
