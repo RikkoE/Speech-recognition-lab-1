@@ -2,6 +2,7 @@
 # Functions to be implemented ----------------------------------
 
 import scipy.signal as sig
+import scipy.fftpack as ft
 import numpy as np 
 
 def enframe(samples, winlen, winshift):
@@ -71,13 +72,15 @@ def windowing(inp):
 
     M = 400
 
+    print inp.size
+
     winfunc = sig.hamming(M, sym = False)
 
     win = inp * winfunc
 
     return win
 
-def powerSpectrum(input, nfft):
+def powerSpectrum(inp, nfft):
     """
     Calculates the power spectrum of the input signal, that is the square of the modulus of the FFT
 
@@ -89,6 +92,12 @@ def powerSpectrum(input, nfft):
         array of power spectra [N x nfft]
     Note: you can use the function fft from scipy.fftpack
     """
+
+    spec = ft.fft(inp, nfft)
+
+    spec = abs(spec)**2
+
+    return spec
 
 def logMelSpectrum(input, samplingrate):
     """

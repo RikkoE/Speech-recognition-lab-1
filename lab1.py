@@ -16,7 +16,7 @@ frame_duration = 0.02
 frame_shift = 0.01
 frame_len = sampling_rate * frame_duration
 
-graph_rows = 4
+graph_rows = 5
 
 #print "tidigits['filename']: ", tidigits['filename']	#printing a dictionary named 'frames'
 
@@ -30,10 +30,12 @@ exsamples = example['samples']
 exframes = example['frames']
 expre = example['preemph']
 exwindowed = example['windowed']
+exspec = example['spec']
 
 realframes = pro.enframe(example['samples'], frame_len, frame_shift)
 realpre = pro.preemp(realframes)
 realwindowed = pro.windowing(realpre)
+realspec = pro.powerSpectrum(realwindowed, 512)
 
 #----------------------------------
 #	TEST IF FUNCTIONS ARE CORRECT
@@ -48,7 +50,7 @@ print "Window success: ", np.array_equal(realwindowed,exwindowed)
 #----------------------------------
 
 ax = plt.subplot(graph_rows, 2, 1)
-ax.plot(realwindowed - exwindowed)
+ax.plot(realspec - exspec)
 
 ax = plt.subplot(graph_rows, 2, 3)
 ax.imshow(exframes.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
@@ -58,6 +60,9 @@ ax.imshow(expre.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
 
 ax = plt.subplot(graph_rows, 2, 7)
 ax.imshow(exwindowed.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
+
+ax = plt.subplot(graph_rows, 2, 9)
+ax.imshow(exspec.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
 
 #----------------------------------
 #	PLOTTING REAL ANSWERS
@@ -75,6 +80,9 @@ ax.imshow(realpre.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower
 ax = plt.subplot(graph_rows, 2, 8)
 ax.imshow(realwindowed.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
 
-#print samples.shape
+ax = plt.subplot(graph_rows, 2, 10)
+ax.imshow(realspec.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
+
+print realspec
 
 plt.show()
