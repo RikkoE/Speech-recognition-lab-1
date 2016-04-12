@@ -58,7 +58,8 @@ exlmfcc = example['lmfcc']
 #realmspec = pro.logMelSpectrum(realspec, sampling_rate)
 #realmfcc = pro.cepstrum(realmspec, 13)
 
-d = tidigits[2]	#USE SAMPLE NR 7, IT IS THE SAME AS IN 'EXAMPLE'
+# KEEP 39 FOR TESTING PURPOSES
+d = tidigits[39]	#USE SAMPLE NR 7, IT IS THE SAME AS IN 'EXAMPLE'
 
 tid1 = d['samples']
 print "Gender: ", d['gender']
@@ -67,7 +68,8 @@ print "Digit: ", d['digit']
 
 test = tools.mfcc(tid1)
 
-d = tidigits[25]
+# KEEP 16 FOR TESTING PURPOSES
+d = tidigits[16]
 tid2 = d['samples']
 test2 = tools.mfcc(tid2)
 
