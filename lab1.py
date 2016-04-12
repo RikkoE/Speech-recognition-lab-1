@@ -3,6 +3,7 @@
 import proto as pro
 import matplotlib.pyplot as plt
 import numpy as np 
+import tools
 
 #----------------------------------
 #		PARAMETERS
@@ -13,14 +14,13 @@ tidigits = np.load('tidigits.npz')['tidigits']
 
 sampling_rate = 20000
 frame_duration = 0.02
-frame_shift = 0.01
+frame_shift = 200
 frame_len = sampling_rate * frame_duration
 
 graph_rows = 3
 
 #print "tidigits['filename']: ", tidigits['filename']	#printing a dictionary named 'frames'
 
-d = tidigits[7]	#USE SAMPLE NR 7, IT IS THE SAME AS IN 'EXAMPLE'
 
 #----------------------------------
 #		CALCULATIONS
@@ -35,20 +35,30 @@ exmspec = example['mspec']
 exmfcc = example['mfcc']
 exlmfcc = example['lmfcc']
 
-realframes = pro.enframe(example['samples'], frame_len, frame_shift)
-realpre = pro.preemp(realframes)
-realwindowed = pro.windowing(realpre)
-realspec = pro.powerSpectrum(realwindowed, 512)
-realmspec = pro.logMelSpectrum(realspec, sampling_rate)
-realmfcc = pro.cepstrum(realmspec, 13)
+#realframes = pro.enframe(example['samples'], frame_len, frame_shift)
+#realpre = pro.preemp(realframes)
+#realwindowed = pro.windowing(realpre)
+#realspec = pro.powerSpectrum(realwindowed, 512)
+#realmspec = pro.logMelSpectrum(realspec, sampling_rate)
+#realmfcc = pro.cepstrum(realmspec, 13)
+
+d = tidigits[6]	#USE SAMPLE NR 7, IT IS THE SAME AS IN 'EXAMPLE'
+
+tid1 = d['samples']
+print "Gender: ", d['gender']
+print "Digit: ", d['digit']
+
+#print tid1
+
+test = tools.mfcc(tid1)
 
 #----------------------------------
 #	TEST IF FUNCTIONS ARE CORRECT
 #----------------------------------
 
-print "Frames success: ", np.array_equal(realframes,exframes)
-print "Pre-emphesis success: ", np.array_equal(realpre,expre)
-print "Window success: ", np.array_equal(realwindowed,exwindowed)
+#print "Frames success: ", np.array_equal(realframes,exframes)
+#print "Pre-emphesis success: ", np.array_equal(realpre,expre)
+#print "Window success: ", np.array_equal(realwindowed,exwindowed)
 
 #----------------------------------
 #	PLOTTING EXAMPLE ANSWERS
@@ -94,14 +104,12 @@ print "Window success: ", np.array_equal(realwindowed,exwindowed)
 #----------------------------------
 
 ax = plt.subplot(graph_rows, 1, 1)
-ax.plot(realmfcc - exlmfcc)
+ax.plot(tid1)
 
 ax = plt.subplot(graph_rows, 1, 2)
 ax.imshow(exlmfcc.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
 
 ax = plt.subplot(graph_rows, 1, 3)
-ax.imshow(realmfcc.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
-
-print exmspec.shape
+ax.imshow(test.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
 
 plt.show()

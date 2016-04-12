@@ -1,4 +1,5 @@
 import numpy as np
+import proto as pro
 # DT2118, Lab 1 Feature Extraction
 # - Functions given by the exercise -------------------------------------------- 
 
@@ -17,12 +18,12 @@ def mfcc(samples, winlen = 400, winshift = 200, nfft=512, nceps=13, samplingrate
     Returns:
         N x nceps array with lifetered MFCC coefficients
     """
-    frames = enframe(samples, winlen, winshift)
-    preemph = preemp(frames, 0.97)
-    windowed = windowing(preemph)
-    spec = powerSpectrum(windowed, nfft)
-    mspec = logMelSpectrum(spec, samplingrate)
-    ceps = cepstrum(mspec, nceps)
+    frames = pro.enframe(samples, winlen, winshift)
+    preemph = pro.preemp(frames, 0.97)
+    windowed = pro.windowing(preemph)
+    spec = pro.powerSpectrum(windowed, nfft)
+    mspec = pro.logMelSpectrum(spec, samplingrate)
+    ceps = pro.cepstrum(mspec, nceps)
     return lifter(ceps, liftercoeff)
 
 def tidigit2labels(tidigitsarray):

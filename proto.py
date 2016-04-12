@@ -21,9 +21,12 @@ def enframe(samples, winlen, winshift):
     prev = 0
     nxt = int(winlen)               # 400 samples in one frame (20 ms)
 
-    step = int(winshift * 20000)    # 200 samples per step (10 ms)
+    step = int(winshift)    # 200 samples per step (10 ms)
 
-    num_frames = int((samples.size // winlen) * 2)  # 80 frames fit in the signal
+    num_frames = int(((samples.size - winshift) // winlen) * 2)  # 80 frames fit in the signal
+
+    print num_frames
+    print samples.shape
 
     result = np.zeros(shape=(num_frames,winlen))
 
@@ -72,8 +75,6 @@ def windowing(inp):
     """
 
     M = 400
-
-    print inp.size
 
     winfunc = sig.hamming(M, sym = False)
 
@@ -140,9 +141,9 @@ def cepstrum(inp, nceps):
 
     cosine = ft.dct(inp, norm = 'ortho')
 
-    res = cosine[:,0:13]
+    res = cosine[:,0:nceps]
 
-    res = tools.lifter(res)
+#    res = tools.lifter(res)
 
     return res
 
