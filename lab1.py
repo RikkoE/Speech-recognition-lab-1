@@ -134,7 +134,33 @@ for i in range(1, tidigits.size):
 #	PLOTTING ANSWERS
 #----------------------------------
 
-diff = eucldist(test, test2)
+#diff = eucldist(test, test2)
+
+#dyn = pro.dtw(diff)
+
+#rows, columns = dyn.shape
+
+#print "Global distance: ", dyn[rows-1][columns-1]
+
+matD = np.zeros(shape=(44, 44))
+
+for x in range(0, 44):
+	for y in range(0, 44):
+
+		tidtemp = tidigits[x]
+		samptemp = tidtemp['samples']
+		mfcctemp = tools.mfcc(samptemp)
+
+		tidtemp2 = tidigits[y]
+		samptemp2 = tidtemp2['samples']
+		mfcctemp2 = tools.mfcc(samptemp2)
+
+		locdist = eucldist(mfcctemp, mfcctemp2)
+		dynprog = pro.dtw(locdist)
+
+		rows, columns = dynprog.shape
+
+		matD[x][y] = dynprog[rows-1][columns-1]
 
 #ax = plt.subplot(graph_rows, 1, 1)
 #ax.plot(tid1)
@@ -142,8 +168,15 @@ diff = eucldist(test, test2)
 #ax = plt.subplot(graph_rows, 1, 2)
 #ax.imshow(exlmfcc.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
 
+#ax = plt.subplot(1, 2, 1)
+#ax.imshow(diff, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
+
+#ax = plt.subplot(1, 2, 2)
+#ax.imshow(dyn, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
+
 ax = plt.subplot(1, 1, 1)
-ax.imshow(diff, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
+ax.imshow(matD, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
+
 
 plt.show()
 
