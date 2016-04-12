@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np 
 import tools
 import math
+import scipy.cluster.hierarchy as hier
 
 
 def eucldist(A, B):
@@ -162,6 +163,12 @@ for x in range(0, 44):
 
 		matD[x][y] = dynprog[rows-1][columns-1]
 
+link = hier.linkage(matD, method = 'complete')
+
+lab = tools.tidigit2labels(tidigits)
+
+hier.dendrogram(link, orientation = 'right', labels = lab)
+
 #ax = plt.subplot(graph_rows, 1, 1)
 #ax.plot(tid1)
 
@@ -174,8 +181,8 @@ for x in range(0, 44):
 #ax = plt.subplot(1, 2, 2)
 #ax.imshow(dyn, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
 
-ax = plt.subplot(1, 1, 1)
-ax.imshow(matD, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
+#ax = plt.subplot(1, 1, 1)
+#ax.imshow(matD, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
 
 
 plt.show()
