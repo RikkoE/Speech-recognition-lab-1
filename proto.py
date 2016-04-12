@@ -154,3 +154,25 @@ def dtw(localdist):
     Output:
         globaldist: scalar, global distance computed by Dynamic Time Warping
     """
+
+    test = float("inf")
+
+    LocD_rows, LocD_columns = localdist.shape
+
+    AccD = np.ones(shape = (LocD_rows + 1, LocD_columns + 1))
+
+    for i in range(1, LocD_rows + 1):
+        AccD[i][0] = test
+    for i in range(1, LocD_columns + 1):
+        AccD[0][i] = test
+    AccD[0][0] = 0
+
+
+    for h in range(1, LocD_rows + 1):
+        for k in range(1, LocD_columns + 1):
+            AccD[h][k] = localdist[h-1][k-1] + min(AccD[h-1][k], AccD[h-1][k-1], AccD[h][k-1])
+
+    res = AccD[1:LocD_rows + 1][1:LocD_columns + 1]
+
+    return res
+
