@@ -4,6 +4,22 @@ import proto as pro
 import matplotlib.pyplot as plt
 import numpy as np 
 import tools
+import math
+
+
+def eucldist(A, B):
+
+	A_num_rows, A_num_cols = A.shape
+
+	B_num_rows, B_num_cols = B.shape
+
+	dist = np.zeros(shape=(A_num_rows,B_num_rows))
+
+	for i in range(0, A_num_rows):
+		for j in range(0, B_num_rows):
+			dist[i][j] = np.linalg.norm(A[i] - B[j])
+
+	return dist
 
 #----------------------------------
 #		PARAMETERS
@@ -42,15 +58,29 @@ exlmfcc = example['lmfcc']
 #realmspec = pro.logMelSpectrum(realspec, sampling_rate)
 #realmfcc = pro.cepstrum(realmspec, 13)
 
-d = tidigits[6]	#USE SAMPLE NR 7, IT IS THE SAME AS IN 'EXAMPLE'
+d = tidigits[2]	#USE SAMPLE NR 7, IT IS THE SAME AS IN 'EXAMPLE'
 
 tid1 = d['samples']
 print "Gender: ", d['gender']
 print "Digit: ", d['digit']
 
-#print tid1
 
 test = tools.mfcc(tid1)
+
+d = tidigits[25]
+tid2 = d['samples']
+test2 = tools.mfcc(tid2)
+
+print "Gender 2: ", d['gender']
+print "Digit 2: ", d['digit']
+
+res = test
+
+for i in range(1, tidigits.size):
+	tid = tidigits[i]
+	current = tools.mfcc(tid['samples'])
+	res = np.append(res, current, axis=0)
+
 
 #----------------------------------
 #	TEST IF FUNCTIONS ARE CORRECT
@@ -97,19 +127,24 @@ test = tools.mfcc(tid1)
 
 #ax = plt.subplot(graph_rows, 2, 10)
 #ax.imshow(realspec.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
-
-
+ 
 #----------------------------------
 #	PLOTTING ANSWERS
 #----------------------------------
 
-ax = plt.subplot(graph_rows, 1, 1)
-ax.plot(tid1)
+diff = eucldist(test, test2)
 
-ax = plt.subplot(graph_rows, 1, 2)
-ax.imshow(exlmfcc.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
+#ax = plt.subplot(graph_rows, 1, 1)
+#ax.plot(tid1)
 
-ax = plt.subplot(graph_rows, 1, 3)
-ax.imshow(test.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
+#ax = plt.subplot(graph_rows, 1, 2)
+#ax.imshow(exlmfcc.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
+
+ax = plt.subplot(1, 1, 1)
+ax.imshow(diff, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
 
 plt.show()
+
+
+
+

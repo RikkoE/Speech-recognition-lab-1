@@ -25,9 +25,6 @@ def enframe(samples, winlen, winshift):
 
     num_frames = int(((samples.size - winshift) // winlen) * 2)  # 80 frames fit in the signal
 
-    print num_frames
-    print samples.shape
-
     result = np.zeros(shape=(num_frames,winlen))
 
     for i in range(0,num_frames):
