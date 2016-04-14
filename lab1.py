@@ -143,34 +143,46 @@ for i in range(1, tidigits.size):
 
 #print "Global distance: ", dyn[rows-1][columns-1]
 
-matD = np.zeros(shape=(44, 44))
+#matD = np.zeros(shape=(44, 44))
 
-for x in range(0, 44):
-	for y in range(0, 44):
+###########################
+# FOR THE LAST ASSIGNMENT
+###########################
 
-		tidtemp = tidigits[x]
-		samptemp = tidtemp['samples']
-		mfcctemp = tools.mfcc(samptemp)
+#for x in range(0, 44):
+#	for y in range(0, 44):
+#
+#		tidtemp = tidigits[x]
+#		samptemp = tidtemp['samples']
+#		mfcctemp = tools.mfcc(samptemp)
+#
+#		tidtemp2 = tidigits[y]
+#		samptemp2 = tidtemp2['samples']
+#		mfcctemp2 = tools.mfcc(samptemp2)
+#
+#		locdist = eucldist(mfcctemp, mfcctemp2)
+#		dynprog = pro.dtw(locdist)
+#
+#		rows, columns = dynprog.shape
+#
+#		matD[x][y] = dynprog[rows-1][columns-1]
+#
+#link = hier.linkage(matD, method = 'complete')
+#
+#lab = tools.tidigit2labels(tidigits)
+#
+#hier.dendrogram(link, orientation = 'right', labels = lab)
 
-		tidtemp2 = tidigits[y]
-		samptemp2 = tidtemp2['samples']
-		mfcctemp2 = tools.mfcc(samptemp2)
+#diff = eucldist(test, test2)
 
-		locdist = eucldist(mfcctemp, mfcctemp2)
-		dynprog = pro.dtw(locdist)
+#dyn = pro.dtw(diff)
 
-		rows, columns = dynprog.shape
+print res[0].shape
 
-		matD[x][y] = dynprog[rows-1][columns-1]
+corre = np.corrcoef(res)
 
-link = hier.linkage(matD, method = 'complete')
-
-lab = tools.tidigit2labels(tidigits)
-
-hier.dendrogram(link, orientation = 'right', labels = lab)
-
-#ax = plt.subplot(graph_rows, 1, 1)
-#ax.plot(tid1)
+plt.imshow(corre.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
+plt.colorbar()
 
 #ax = plt.subplot(graph_rows, 1, 2)
 #ax.imshow(exlmfcc.T, interpolation = 'nearest', aspect = 'auto', origin = 'lower')
